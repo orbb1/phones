@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import Tile from '../components/Tile/Tile.vue'
+import NewPhoneForm from '../components/NewPhoneForm/NewPhoneForm.vue'
 import { usePhonesStore } from '../stores/phones'
 import type { PhoneModel } from '../stores/phones'
 
-const phones = usePhonesStore()
-const newPhone: PhoneModel ={
+const { phones, addPhone } = usePhonesStore()
+const newPhone: PhoneModel = {
   id: 1,
   brand: {
-    value: 'nokia',
-    label: 'Nokia',
+    key: 'nokia',
+    brand_name: 'Nokia',
+    brand_id: 1,
   },
   model: {
     value: '3100',
@@ -29,8 +31,8 @@ const newPhone: PhoneModel ={
     <h1>Home page</h1>
   </header>
   <main>
-    
-    <Tile v-for="phone in phones.phones" :phone="phone" />
-    <button @click="phones.addPhone(newPhone)">Add phone</button>
+    <NewPhoneForm />
+    <Tile v-for="phone in phones" :phone="phone" />
+    <button @click="addPhone(newPhone)">Add phone</button>
   </main>
 </template>
