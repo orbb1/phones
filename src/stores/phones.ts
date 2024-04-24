@@ -56,11 +56,19 @@ export const usePhonesStore = defineStore('phones', {
       device_image: string
       device_name: string
       key: string
-    }[]
+    }[],
+    newPhone: {} as PhoneModel
   }),
   actions: {
     addPhone(phone: PhoneModel) {
+      console.log(phone)
       this.phones = [...this.phones, phone]
+    },
+    updateNewPhone(key: string, value: any) {
+      this.newPhone = {
+        ...this.newPhone,
+        [key]: value
+      }
     },
     async fetchBrands([, onFail]: Function[] = []) {
       fetch(brandsUrl)
@@ -90,7 +98,6 @@ export const usePhonesStore = defineStore('phones', {
         .then((res) => res.json())
         .then(({ data }) => {
           if (data?.device_list) {
-            console.log(data?.device_list)
             this.models = data?.device_list
           }
         })

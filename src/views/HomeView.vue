@@ -3,27 +3,11 @@ import Tile from '../components/Tile/Tile.vue'
 import NewPhoneForm from '../components/NewPhoneForm/NewPhoneForm.vue'
 import { usePhonesStore } from '../stores/phones'
 import type { PhoneModel } from '../stores/phones'
+import { storeToRefs } from 'pinia';
 
-const { phones, addPhone } = usePhonesStore()
-const newPhone: PhoneModel = {
-  id: 1,
-  brand: {
-    key: 'nokia',
-    brand_name: 'Nokia',
-    brand_id: 1,
-  },
-  model: {
-    value: '3100',
-    label: '3100',
-  },
-  years: {
-    start: '2004',
-    end: '2005'
-  },
-  picture:{
-    url: 'https://fdn2.gsmarena.com/vv/pics/nokia/no3100_00.jpg'
-  }
-}
+const store = usePhonesStore()
+const { phones, newPhone } = storeToRefs(store)
+
 </script>
 
 <template>
@@ -33,6 +17,6 @@ const newPhone: PhoneModel = {
   <main>
     <NewPhoneForm />
     <Tile v-for="phone in phones" :phone="phone" />
-    <button @click="addPhone(newPhone)">Add phone</button>
+    <button @click="store.addPhone(newPhone)">Add phone</button>
   </main>
 </template>
