@@ -26,10 +26,10 @@ import { usePhonesStore} from '../../stores/phones'
     store.updateNewPhone('picture', { url :model?.device_image })
   }
   const onChangeStartYear = (event: any) => {
-    store.updateNewPhone('years', { value: event.target.value })
+    store.updateNewPhone('startDate', event.target.value)
   }
   const onChangeEndYear = (event: any) => {
-    store.updateNewPhone('years', { value: event.target.value })
+    store.updateNewPhone('endDate', event.target.value )
   }
 </script>
 

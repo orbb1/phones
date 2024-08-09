@@ -3,10 +3,8 @@ import { defineStore } from 'pinia'
 
 export type PhoneModel = {
   id: number
-  years: {
-    start: string
-    end: string
-  }
+  startDate: string
+  endDate: string
   brand: {
     brand_id: number
     brand_name: string
@@ -61,7 +59,6 @@ export const usePhonesStore = defineStore('phones', {
   }),
   actions: {
     addPhone(phone: PhoneModel) {
-      console.log(phone)
       this.phones = [...this.phones, phone]
     },
     updateNewPhone(key: string, value: any) {
