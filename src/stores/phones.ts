@@ -6,9 +6,8 @@ export type PhoneModel = {
   startDate: string
   endDate: string
   brand: {
-    brand_id: number
-    brand_name: string
-    key: string
+    label: string
+    value: number
   }
   model: {
     label: string
@@ -60,6 +59,7 @@ export const usePhonesStore = defineStore('phones', {
   actions: {
     addPhone(phone: PhoneModel) {
       this.phones = [...this.phones, phone]
+      this.newPhone = {} as PhoneModel
     },
     updateNewPhone(key: string, value: any) {
       this.newPhone = {
@@ -79,7 +79,7 @@ export const usePhonesStore = defineStore('phones', {
           }
         })
     },
-    async fetchModelsbyBrand(
+    async fetchModelsByBrand(
       brand: { brand_id: number; brand_name: string },
       [, onFail]: Function[] = []
     ) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  const props = defineProps(['phone'])
-  const { startDate, endDate, model, brand, picture } = props.phone;
+const props = defineProps(['phone'])
+const { startDate, endDate, model, brand, picture } = props.phone
 </script>
 
 <template>

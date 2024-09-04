@@ -2,12 +2,14 @@
 import Tile from '../components/Tile/Tile.vue'
 import NewPhoneForm from '../components/NewPhoneForm/NewPhoneForm.vue'
 import { usePhonesStore } from '../stores/phones'
-import type { PhoneModel } from '../stores/phones'
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 
+onMounted(() => {
+  store.fetchBrands()
+})
 const store = usePhonesStore()
 const { phones, newPhone } = storeToRefs(store)
-
 </script>
 
 <template>
