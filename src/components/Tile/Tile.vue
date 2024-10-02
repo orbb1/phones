@@ -6,7 +6,7 @@ const { startDate, endDate, model, brand, picture } = props.phone
 <template>
   <div>
     <p>Years: {{ startDate }} - {{ endDate }}</p>
-    <p>Brand: {{ brand.brand_name }}</p>
+    <p>Brand: {{ brand.label }}</p>
     <p>Model: {{ model.label }}</p>
     <img :src="picture.url" />
   </div>

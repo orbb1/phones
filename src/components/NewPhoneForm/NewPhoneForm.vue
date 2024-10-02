@@ -4,7 +4,7 @@ import { usePhonesStore } from '../../stores/phones'
 import { ref } from 'vue'
 
 const store = usePhonesStore()
-const { brands, models, newPhone } = storeToRefs(store)
+const { brands, models, newPhone, isLoading } = storeToRefs(store)
 const pictureUrl = ref<string | undefined>('')
 
 const onChangeBrand = (event: any) => {
@@ -28,33 +28,51 @@ const onChangeStartYear = (event: any) => {
 const onChangeEndYear = (event: any) => {
   store.updateNewPhone('endDate', event.target.value)
 }
+const onSubmit = () => {
+  store.submitPhone(newPhone.value)
+}
 </script>
 
 <template>
-  <form>
-    <label>
-      From:
-      <input :value="newPhone.startDate" type="date" @change="onChangeStartYear($event)" />
-    </label>
-    <label>
-      To:
-      <input :value="newPhone.endDate" type="date" @change="onChangeEndYear($event)" />
-    </label>
-    <label>
-      Select brand
-      <select @change="onChangeBrand($event)">
-        <option value="">select</option>
-        <option v-for="brand in brands" :value="brand.brand_id">{{ brand.brand_name }}</option>
-      </select>
-    </label>
-    <label>
-      Select model
-      <select @change="onChangeModel($event)">
-        <option v-for="model in models" :value="model.key">{{ model.device_name }}</option>
-      </select>
-    </label>
-    <img :src="newPhone?.picture?.url" />
-  </form>
+  <div v-if="isLoading">Loading...</div>
+  <div v-else>
+    <form @submit.prevent="onSubmit">
+      <label>
+        From:
+        <input :value="newPhone.startDate" type="date" @change="onChangeStartYear($event)" />
+      </label>
+      <label>
+        To:
+        <input :value="newPhone.endDate" type="date" @change="onChangeEndYear($event)" />
+      </label>
+      <label>
+        Select brand
+        <select @change="onChangeBrand($event)">
+          <option
+            v-for="brand in brands"
+            :selected="brand.brand_id === newPhone.brand.value"
+            :value="brand.brand_id"
+          >
+            {{ brand.brand_name }}
+          </option>
+        </select>
+      </label>
+      <label>
+        Select model
+        <select @change="onChangeModel($event)">
+          <option
+            v-for="model in models"
+            :selected="model.key === newPhone.model.value"
+            :value="model.key"
+          >
+            {{ model.device_name }}
+          </option>
+        </select>
+      </label>
+      <img :src="newPhone?.picture?.url" />
+    </form>
+    <button @click="onSubmit">Add phone</button>
+  </div>
 </template>
 <style>
 form {

@@ -54,10 +54,11 @@ export const usePhonesStore = defineStore('phones', {
       device_name: string
       key: string
     }[],
-    newPhone: {} as PhoneModel
+    newPhone: {} as PhoneModel,
+    isLoading: false as boolean
   }),
   actions: {
-    addPhone(phone: PhoneModel) {
+    submitPhone(phone: PhoneModel) {
       this.phones = [...this.phones, phone]
       this.newPhone = {} as PhoneModel
     },
@@ -68,21 +69,25 @@ export const usePhonesStore = defineStore('phones', {
       }
     },
     async fetchBrands([, onFail]: Function[] = []) {
+      this.isLoading = true
       fetch(brandsUrl)
         .then((res) => res.json())
         .then((res) => {
           this.brands = res.data
+          this.isLoading = false
         })
         .catch((error) => {
           if (onFail) {
             onFail(error)
           }
+          this.isLoading = false
         })
     },
     async fetchModelsByBrand(
       brand: { brand_id: number; brand_name: string },
       [, onFail]: Function[] = []
     ) {
+      this.isLoading = true
       fetch(deviceByBrandUrl, {
         method: 'POST',
         body: JSON.stringify({
@@ -97,11 +102,13 @@ export const usePhonesStore = defineStore('phones', {
           if (data?.device_list) {
             this.models = data?.device_list
           }
+          this.isLoading = false
         })
         .catch((error) => {
           if (onFail) {
             onFail(error)
           }
+          this.isLoading = false
         })
     }
   }

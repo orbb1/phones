@@ -5,20 +5,31 @@ import { usePhonesStore } from '../stores/phones'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 
+const store = usePhonesStore()
+const { phones, newPhone } = storeToRefs(store)
+
 onMounted(() => {
   store.fetchBrands()
 })
-const store = usePhonesStore()
-const { phones, newPhone } = storeToRefs(store)
 </script>
 
 <template>
-  <header>
-    <h1>Home page</h1>
-  </header>
-  <main>
+  <BaseLayout title="Home page">
     <NewPhoneForm />
-    <Tile v-for="phone in phones" :phone="phone" />
-    <button @click="store.addPhone(newPhone)">Add phone</button>
-  </main>
+    <div class="phone-list">
+      <Tile v-for="phone in phones" :key="phone.id" :phone="phone" />
+    </div>
+    <!-- <button @click="store.submitPhone(newPhone)" class="add-phone-btn">Add phone</button> -->
+  </BaseLayout>
 </template>
+
+<style scoped>
+@media (min-width: 1024px) {
+  .header {
+    border: 1px solid blue;
+  }
+  .main {
+    border: 1px solid blue;
+  }
+}
+</style>
