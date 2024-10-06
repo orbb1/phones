@@ -59,7 +59,7 @@ const onSubmit = () => {
       <select :disabled="isLoading" @change="onChangeBrand($event)">
         <option
           v-for="brand in brands"
-          :selected="brand.brand_id === newPhone.brand.value"
+          :selected="brand.brand_id === newPhone?.brand?.value"
           :value="brand.brand_id"
         >
           {{ brand.brand_name }}
