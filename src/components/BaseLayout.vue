@@ -13,9 +13,11 @@ defineProps<{
 
 <style scoped>
 .base-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
+  border: 1ps solid black;
 }
 
 h1 {

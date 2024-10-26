@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Tile from '../components/Tile/Tile.vue'
 import NewPhoneForm from '../components/NewPhoneForm/NewPhoneForm.vue'
+import BaseLayout from '../components/BaseLayout.vue'
 import { usePhonesStore } from '../stores/phones'
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
@@ -18,7 +19,6 @@ onMounted(() => {
     <div class="phone-list">
       <Tile v-for="phone in phones.values()" :key="phone.id" :phone="phone" />
     </div>
-    <!-- <button @click="store.submitPhone(newPhone)" class="add-phone-btn">Add phone</button> -->
   </BaseLayout>
 </template>
 

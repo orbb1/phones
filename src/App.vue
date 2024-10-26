@@ -15,11 +15,8 @@ import TheNavigation from './components/TheNavigation.vue'
 <style scoped>
 .app-wrapper {
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-height: 100vh;
-}
-
-main {
-  flex: 1;
 }
 </style>

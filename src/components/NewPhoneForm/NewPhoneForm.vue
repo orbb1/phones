@@ -42,48 +42,63 @@ const onSubmit = () => {
 <template>
   <div v-if="isLoading">Loading...</div>
   <form @submit.prevent="onSubmit">
-    <label>
-      From:
-      <input
-        :disabled="isLoading"
-        :value="newPhone.startDate"
-        type="date"
-        @input="onChangeStartDate"
-      />
-    </label>
-    <label>
-      To:
-      <input :disabled="isLoading" :value="newPhone.endDate" type="date" @input="onChangeEndDate" />
-    </label>
-    <label>
-      Select brand
-      <select :disabled="isLoading" @change="onChangeBrand">
-        <option
-          v-for="brand in brands"
-          :key="brand.brand_id"
-          :selected="brand.brand_id === newPhone?.brand?.value"
-          :value="brand.brand_id"
-        >
-          {{ brand.brand_name }}
-        </option>
-      </select>
-    </label>
-    <label>
-      Select model
-      <select :disabled="isLoading" @change="onChangeModel">
-        <option
-          v-for="model in models"
-          :key="model.key"
-          :selected="model.key === newPhone.model?.value"
-          :value="model.key"
-        >
-          {{ model.device_name }}
-        </option>
-      </select>
-    </label>
-    <img v-if="pictureUrl" :src="pictureUrl" alt="Selected phone model" />
+    <div class="form-wrapper">
+      <div class="form-input-wrapper">
+        <label>
+          From:
+          <input
+            :disabled="isLoading"
+            :value="newPhone.startDate"
+            type="date"
+            @input="onChangeStartDate"
+          />
+        </label>
+      </div>
+      <div class="form-input-wrapper">
+        <label>
+          To:
+          <input
+            :disabled="isLoading"
+            :value="newPhone.endDate"
+            type="date"
+            @input="onChangeEndDate"
+          />
+        </label>
+      </div>
+      <div class="form-input-wrapper">
+        <label>
+          Select brand
+          <select :disabled="isLoading" @change="onChangeBrand">
+            <option
+              v-for="brand in brands"
+              :key="brand.brand_id"
+              :selected="brand.brand_id === newPhone?.brand?.value"
+              :value="brand.brand_id"
+            >
+              {{ brand.brand_name }}
+            </option>
+          </select>
+        </label>
+      </div>
+      <div class="form-input-wrapper">
+        <label>
+          Select model
+          <select :disabled="isLoading" @change="onChangeModel">
+            <option
+              v-for="model in models"
+              :key="model.key"
+              :selected="model.key === newPhone.model?.value"
+              :value="model.key"
+            >
+              {{ model.device_name }}
+            </option>
+          </select>
+        </label>
+      </div>
+      <img v-if="pictureUrl" :src="pictureUrl" alt="Selected phone model" />
+    </div>
   </form>
-  <button :disabled="isLoading" @click="onSubmit">Add phone</button>
+  <button class="submit-button" :disabled="isLoading" @click="onSubmit">Add phone</button>
 </template>
 
 <style scoped>
@@ -95,17 +110,30 @@ form {
   gap: 1rem;
 }
 
+.form-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.form-input-wrapper {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  flex-grow: 1;
+}
+
+.submit-button {
+  margin: 1rem auto;
+}
+
 label {
   display: flex;
+  font-weight: bold;
   flex-direction: column;
 }
 
 img {
   max-width: 200px;
-  margin-top: 1rem;
-}
-
-button {
   margin-top: 1rem;
 }
 </style>
