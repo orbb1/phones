@@ -1,33 +1,39 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { usePhonesStore } from '../../stores/phones'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const store = usePhonesStore()
 const { brands, models, newPhone, isLoading } = storeToRefs(store)
-const pictureUrl = ref<string | undefined>('')
 
-const onChangeBrand = (event: any) => {
-  const brand = brands.value.find((b) => `${b.brand_id}` === event.target.value)
+const pictureUrl = computed(() => newPhone.value?.picture?.url || '')
+
+const onChangeBrand = (event: Event) => {
+  const brandId = (event.target as HTMLSelectElement).value
+  const brand = brands.value.find((b) => `${b.brand_id}` === brandId)
   if (brand) {
-    const { brand_id, brand_name } = brand
-    store.fetchModelsByBrand({ brand_id, brand_name })
-    store.updateNewPhone('brand', { label: brand_name, value: brand_id })
+    store.fetchModelsByBrand({ brand_id: brand.brand_id, brand_name: brand.brand_name })
+    store.updateNewPhone('brand', { label: brand.brand_name, value: brand.brand_id })
   }
 }
 
-const onChangeModel = (event: any) => {
-  const model = models.value.find((b) => `${b.key}` === event.target.value)
-  pictureUrl.value = model?.device_image
-  store.updateNewPhone('model', { label: model?.device_name, value: model?.device_name })
-  store.updateNewPhone('picture', { url: model?.device_image })
+const onChangeModel = (event: Event) => {
+  const modelKey = (event.target as HTMLSelectElement).value
+  const model = models.value.find((m) => m.key === modelKey)
+  if (model) {
+    store.updateNewPhone('model', { label: model.device_name, value: model.key })
+    store.updateNewPhone('picture', { url: model.device_image })
+  }
 }
-const onChangeStartYear = (event: any) => {
-  store.updateNewPhone('startDate', event.target.value)
+
+const onChangeStartDate = (event: Event) => {
+  store.updateNewPhone('startDate', (event.target as HTMLInputElement).value)
 }
-const onChangeEndYear = (event: any) => {
-  store.updateNewPhone('endDate', event.target.value)
+
+const onChangeEndDate = (event: Event) => {
+  store.updateNewPhone('endDate', (event.target as HTMLInputElement).value)
 }
+
 const onSubmit = () => {
   store.submitPhone(newPhone.value)
 }
@@ -42,23 +48,19 @@ const onSubmit = () => {
         :disabled="isLoading"
         :value="newPhone.startDate"
         type="date"
-        @change="onChangeStartYear($event)"
+        @input="onChangeStartDate"
       />
     </label>
     <label>
       To:
-      <input
-        :disabled="isLoading"
-        :value="newPhone.endDate"
-        type="date"
-        @change="onChangeEndYear($event)"
-      />
+      <input :disabled="isLoading" :value="newPhone.endDate" type="date" @input="onChangeEndDate" />
     </label>
     <label>
       Select brand
-      <select :disabled="isLoading" @change="onChangeBrand($event)">
+      <select :disabled="isLoading" @change="onChangeBrand">
         <option
           v-for="brand in brands"
+          :key="brand.brand_id"
           :selected="brand.brand_id === newPhone?.brand?.value"
           :value="brand.brand_id"
         >
@@ -68,22 +70,42 @@ const onSubmit = () => {
     </label>
     <label>
       Select model
-      <select :disabled="isLoading" @change="onChangeModel($event)">
+      <select :disabled="isLoading" @change="onChangeModel">
         <option
           v-for="model in models"
-          :selected="model.key === newPhone.model.value"
+          :key="model.key"
+          :selected="model.key === newPhone.model?.value"
           :value="model.key"
         >
           {{ model.device_name }}
         </option>
       </select>
     </label>
-    <img :src="newPhone?.picture?.url" />
+    <img v-if="pictureUrl" :src="pictureUrl" alt="Selected phone model" />
   </form>
   <button :disabled="isLoading" @click="onSubmit">Add phone</button>
 </template>
-<style>
+
+<style scoped>
 form {
   border: 1px solid;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  max-width: 200px;
+  margin-top: 1rem;
+}
+
+button {
+  margin-top: 1rem;
 }
 </style>

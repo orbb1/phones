@@ -60,7 +60,6 @@ export const usePhonesStore = defineStore('phones', {
   actions: {
     submitPhone(phone: PhoneModel) {
       this.phones = [...this.phones, phone]
-      this.newPhone = {} as PhoneModel
     },
     updateNewPhone(key: string, value: any) {
       this.newPhone = {

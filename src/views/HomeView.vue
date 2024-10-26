@@ -6,8 +6,7 @@ import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 
 const store = usePhonesStore()
-const { phones, newPhone } = storeToRefs(store)
-
+const { phones } = storeToRefs(store)
 onMounted(() => {
   store.fetchBrands()
 })
@@ -17,19 +16,18 @@ onMounted(() => {
   <BaseLayout title="Home page">
     <NewPhoneForm />
     <div class="phone-list">
-      <Tile v-for="phone in phones" :key="phone.id" :phone="phone" />
+      <Tile v-for="phone in phones.values()" :key="phone.id" :phone="phone" />
     </div>
     <!-- <button @click="store.submitPhone(newPhone)" class="add-phone-btn">Add phone</button> -->
   </BaseLayout>
 </template>
 
 <style scoped>
-@media (min-width: 1024px) {
-  .header {
-    border: 1px solid blue;
-  }
-  .main {
-    border: 1px solid blue;
-  }
+.phone-list {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem;
 }
 </style>
